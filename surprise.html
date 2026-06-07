@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Kuhu ❤️</title>
+
+<style>
+
+/* BACKGROUND ANIMATION */
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+text-align:center;
+overflow:hidden;
+color:#c40000;
+
+background:linear-gradient(-45deg,#ffffff,#ffe6e6,#fff0f5,#ffffff);
+background-size:400% 400%;
+animation:bgMove 10s ease infinite;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* PASSWORD */
+#passwordScreen{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+input{
+padding:12px;
+border-radius:12px;
+border:2px solid red;
+}
+
+.glow{
+text-shadow:0 0 10px red,0 0 25px crimson;
+}
+
+button{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:linear-gradient(45deg,red,crimson);
+color:white;
+font-size:16px;
+box-shadow:0 0 15px red;
+}
+
+/* MAIN */
+#mainContent{display:none;}
+
+.center{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:90%;
+}
+
+/* TAP */
+#lock{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+/* ENVELOPE */
+#envelope{display:none;}
+.env{
+width:200px;
+height:120px;
+background:red;
+border-radius:12px;
+animation:float 2s infinite alternate;
+}
+@keyframes float{
+to{transform:translateY(-15px);}
+}
+
+/* LETTER */
+#letter{
+display:none;
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 25px red;
+}
+
+/* HEART RAIN */
+.heart{
+position:absolute;
+font-size:20px;
+animation:fall linear infinite;
+}
+@keyframes fall{
+to{transform:translateY(110vh);}
+}
+
+/* SPARK */
+.spark{
+position:absolute;
+width:4px;
+height:4px;
+background:red;
+border-radius:50%;
+animation:blink 2s infinite;
+}
+@keyframes blink{50%{opacity:0;}}
+
+/* FLOAT */
+.name{
+position:absolute;
+opacity:0.1;
+font-size:18px;
+}
+
+/* CIRCLE */
+#circle{
+display:none;
+width:180px;
+height:180px;
+border:2px solid red;
+border-radius:50%;
+animation:pulse 2s infinite;
+}
+@keyframes pulse{
+50%{transform:scale(1.3);}
+}
+
+/* PROPOSAL */
+#proposal{display:none;}
+
+.bigheart{
+font-size:70px;
+color:red;
+animation:beat 1s infinite;
+text-shadow:0 0 20px red,0 0 40px crimson;
+}
+@keyframes beat{
+0%{transform:scale(1);}
+50%{transform:scale(1.5);}
+100%{transform:scale(1);}
+}
+
+/* CONFETTI */
+.confetti{
+position:absolute;
+width:8px;
+height:8px;
+background:red;
+opacity:0.8;
+animation:confall 4s linear infinite;
+}
+@keyframes confall{
+to{transform:translateY(100vh) rotate(360deg);}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="passwordScreen">
+<h2 class="glow">Only Kuhu can enter 💖</h2>
+<input type="password" id="pass">
+<br><br>
+<button onclick="checkPass()">Unlock ❤️</button>
+<p id="error"></p>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent">
+
+<div id="lock">
+<h2 class="glow">Kuhu… tap 5 times 💖</h2>
+<button onclick="tap()">Tap ❤️</button>
+<p id="count">0/5</p>
+<div id="tapMsg"></div>
+</div>
+
+<div id="envelope" class="center">
+<div class="env"></div>
+<p>Open 💌</p>
+</div>
+
+<div id="letter" class="center">
+<h3 class="glow">Dear Kuhu 💖</h3>
+<p id="text"></p>
+</div>
+
+<div id="circle" class="center"></div>
+
+<div id="proposal" class="center">
+<div class="bigheart">❤️</div>
+<h2>Kuhu…</h2>
+<h2>Ami tomar sathe thakte chai…</h2>
+<h2>I WANT YOU 💖</h2>
+<p id="time"></p>
+<br>
+<button onclick="yes()">YES ❤️</button>
+<button onmouseover="run(this)">NO 😅</button>
+</div>
+
+</div>
+
+<audio id="music" loop>
+<source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
+</audio>
+
+<script>
+
+/* PASSWORD */
+function checkPass(){
+if(pass.value.toLowerCase().trim()==="kuhu"){
+passwordScreen.innerHTML="<h1 class='glow'>Access Granted Kuhu 💖</h1>";
+setTimeout(()=>{
+passwordScreen.style.display="none";
+mainContent.style.display="block";
+},1500);
+}else{
+error.innerText="Wrong 💔";
+}
+}
+
+/* TAP */
+let taps=0;
+let msgs=[
+"Thinking of you 💖",
+"Tomar hasi sundor 😊",
+"Jhogra o cute 😅",
+"Kolkata = you 🌉",
+"Special surprise 💌"
+];
+
+function tap(){
+taps++;
+count.innerText=taps+"/5";
+tapMsg.innerText=msgs[taps-1];
+
+if(taps==5){
+lock.style.display="none";
+envelope.style.display="block";
+startMusic();
+startEffects();
+}
+}
+
+/* MUSIC */
+function startMusic(){
+music.volume=0;
+music.play();
+let v=0;
+setInterval(()=>{if(v<1){v+=0.05;music.volume=v;}},200);
+}
+
+/* OPEN LETTER */
+envelope.onclick=()=>{
+envelope.style.display="none";
+letter.style.display="block";
+type();
+}
+
+/* TYPE */
+let message=`Kuhu...
+
+Tumi amar jibon e onek special 💖
+
+Tomar hasi amar favorite 😊
+
+Amader jhogra o cute 😅
+
+Ami tomar sathe thakte chai...`;
+
+let i=0;
+function type(){
+if(i<message.length){
+text.innerHTML+=message[i++];
+setTimeout(type,25);
+}else{
+setTimeout(()=>{
+letter.style.display="none";
+circle.style.display="block";
+setTimeout(()=>{
+proposal.style.display="block";
+timer();
+heartbeat();
+},2000);
+},1500);
+}
+}
+
+/* EFFECTS */
+function startEffects(){
+
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerText="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(3+Math.random()*4)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),8000);
+},150);
+
+setInterval(()=>{
+let s=document.createElement("div");
+s.className="spark";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),2000);
+},120);
+
+setInterval(()=>{
+let n=document.createElement("div");
+n.className="name";
+n.innerText="Kuhu 💖";
+n.style.left=Math.random()*100+"vw";
+n.style.top=Math.random()*100+"vh";
+document.body.appendChild(n);
+},900);
+
+}
+
+/* TIMER */
+function timer(){
+let start=new Date("2024-01-01");
+setInterval(()=>{
+let d=Math.floor((new Date()-start)/86400000);
+time.innerText=d+" days thinking of you 💖";
+},1000);
+}
+
+/* NO BTN */
+function run(btn){
+btn.style.position="absolute";
+btn.style.left=Math.random()*80+"vw";
+btn.style.top=Math.random()*80+"vh";
+}
+
+/* YES */
+function yes(){
+proposal.innerHTML="<h1 class='glow'>Forever starts now 💖</h1>";
+fireworks();
+confetti();
+}
+
+/* FIREWORKS */
+function fireworks(){
+for(let i=0;i<12;i++){
+setTimeout(()=>burst(),i*300);
+}
+}
+
+function burst(){
+let x=Math.random()*innerWidth;
+let y=Math.random()*innerHeight;
+
+for(let i=0;i<40;i++){
+let f=document.createElement("div");
+f.style.position="absolute";
+f.style.width="6px";
+f.style.height="6px";
+f.style.background="red";
+f.style.borderRadius="50%";
+
+let a=Math.random()*2*Math.PI;
+let d=80+Math.random()*100;
+
+f.style.left=x+"px";
+f.style.top=y+"px";
+
+f.animate([
+{transform:"translate(0,0)",opacity:1},
+{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px)`,opacity:0}
+],{duration:1000});
+
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
+}
+
+/* CONFETTI */
+function confetti(){
+setInterval(()=>{
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),4000);
+},100);
+}
+
+/* HEARTBEAT */
+function heartbeat(){
+setInterval(()=>{
+let beat=new Audio("https://www.soundjay.com/heartbeat/sounds/heartbeat-01a.mp3");
+beat.volume=0.3;
+beat.play();
+},1000);
+}
+
+</script>
+
+</body>
+</html>
